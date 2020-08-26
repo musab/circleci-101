@@ -17,21 +17,6 @@ jobs:
           # Must be relative path from root
           paths:
             - echo-output
-  testa:
-    docker:
-      - image: circleci/ruby:2.4.1
-    steps:
-      - attach_workspace:
-          # Must be absolute path or relative path from working_directory
-          at: my_workspace
-
-      - run: cat my_workspace/echo-output
-
-  testb:
-    docker:
-      - image: circleci/ruby:2.4.1
-    steps:
-      - heroku/deploy-via-git
 
   deploy:
     docker:
@@ -45,14 +30,6 @@ workflows:
   build_and_test:
     jobs:
       - build
-      - testa:
-          requires:
-            - build
-      - testb:
-          requires:
-            - build
       - deploy:
           requires:
             - build
-            - testa
-            - testb
