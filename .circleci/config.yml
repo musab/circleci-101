@@ -1,7 +1,7 @@
 version: 2.1
 
 orbs:
-   heroku: circleci/heroku@x.y
+   heroku: circleci/heroku@1.2.2
 
 jobs:
   build:
@@ -37,13 +37,9 @@ jobs:
     docker:
       - image: circleci/ruby:2.4.1
     steps:
-      - attach_workspace:
-          # Must be absolute path or relative path from working_directory
-          at: my_workspace
-
-      - run: |
-          echo "Deploying message!"
-          cat my_workspace/echo-output
+      - checkout
+      - heroku/install
+      - heroku/deploy-via-git
 
 workflows:
   build_and_test:
